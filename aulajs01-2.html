@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>JavaScript — Conversão de Dólar para Real</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+            line-height: 1.7;
+        }
+
+    /* =========================
+    MENU LATERAL
+    ========================== */
+
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 270px;
+        height: 100vh;
+        background: #111827;
+        color: white;
+        padding: 25px 18px;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .logo span {
+        color: #f7df1e;
+    }
+
+    .subtitle {
+        font-size: 13px;
+        color: #9ca3af;
+        margin-bottom: 30px;
+    }
+
+    .teacher {
+        border-top: 1px solid #374151;
+        border-bottom: 1px solid #374151;
+        padding: 14px 4px;
+        margin-bottom: 20px;
+        font-size: 12px;
+        color: #d1d5db;
+    }
+
+    .teacher strong {
+        color: #f7df1e;
+    }
+
+    .menu-title {
+        text-transform: uppercase;
+        font-size: 11px;
+        color: #6b7280;
+        letter-spacing: 1px;
+        margin: 20px 0 8px;
+    }
+
+    .sidebar a {
+        display: block;
+        color: #d1d5db;
+        text-decoration: none;
+        padding: 9px 12px;
+        border-radius: 7px;
+        font-size: 14px;
+        margin-bottom: 3px;
+    }
+
+    .sidebar a:hover {
+        background: #1f2937;
+        color: #f7df1e;
+    }
+
+    /* =========================
+    CONTEÚDO
+    ========================== */
+
+    .main {
+        margin-left: 270px;
+        max-width: 1100px;
+        padding: 40px 55px 80px;
+    }
+
+    .hero {
+        background: linear-gradient(135deg, #111827, #064e3b);
+        color: white;
+        border-radius: 22px;
+        padding: 55px;
+        margin-bottom: 35px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero::after {
+        content: "$ → R$";
+        position: absolute;
+        right: 15px;
+        bottom: -20px;
+        font-size: 82px;
+        font-weight: bold;
+        color: rgba(255, 255, 255, .06);
+    }
+
+    .badge {
+        display: inline-block;
+        background: #f7df1e;
+        color: #111827;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 18px;
+    }
+
+    .hero h1 {
+        font-size: 42px;
+        line-height: 1.15;
+        margin-bottom: 18px;
+    }
+
+    .hero p {
+        max-width: 700px;
+        color: #d1fae5;
+        font-size: 17px;
+    }
+
+    .author {
+        margin-top: 25px;
+        font-size: 14px;
+        color: #a7f3d0;
+    }
+
+    /* =========================
+    SEÇÕES
+    ========================== */
+
+    section {
+        background: white;
+        border-radius: 18px;
+        padding: 35px;
+        margin-bottom: 28px;
+        box-shadow: 0 5px 20px rgba(15, 23, 42, .06);
+    }
+
+    section h2 {
+        font-size: 28px;
+        color: #111827;
+        margin-bottom: 12px;
+    }
+
+    section h3 {
+        color: #047857;
+        margin: 25px 0 10px;
+    }
+
+    section p {
+        margin-bottom: 15px;
+    }
+
+    .section-number {
+        color: #059669;
+        font-size: 13px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* =========================
+    OBJETIVOS
+    ========================== */
+
+    .objectives {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .objective {
+        padding: 20px;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        background: #f8fafc;
+    }
+
+    .objective strong {
+        display: block;
+        margin-bottom: 5px;
+        color: #111827;
+    }
+
+    /* =========================
+    FLUXO
+    ========================== */
+
+    .flow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin: 30px 0;
+        flex-wrap: wrap;
+    }
+
+    .flow-box {
+        background: #ecfdf5;
+        border: 2px solid #10b981;
+        color: #065f46;
+        padding: 16px 25px;
+        border-radius: 12px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .arrow {
+        font-size: 25px;
+        color: #64748b;
+    }
+
+    /* =========================
+    CÓDIGO
+    ========================== */
+
+    pre {
+        background: #0f172a;
+        color: #e5e7eb;
+        padding: 22px;
+        border-radius: 12px;
+        overflow-x: auto;
+        margin: 15px 0 22px;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    code {
+        font-family: Consolas, "Courier New", monospace;
+    }
+
+    .inline-code {
+        background: #ecfdf5;
+        color: #047857;
+        padding: 3px 7px;
+        border-radius: 5px;
+        font-family: Consolas, monospace;
+        font-size: 90%;
+    }
+
+    /* =========================
+    ALERTAS
+    ========================== */
+
+    .info {
+        background: #eff6ff;
+        border-left: 5px solid #3b82f6;
+        padding: 18px;
+        border-radius: 8px;
+        margin: 20px 0;
+    }
+
+    .warning {
+        background: #fff7ed;
+        border-left: 5px solid #f97316;
+        padding: 18px;
+        border-radius: 8px;
+        margin: 20px 0;
+    }
+
+    .success {
+        background: #ecfdf5;
+        border-left: 5px solid #10b981;
+        padding: 18px;
+        border-radius: 8px;
+        margin: 20px 0;
+    }
+
+    /* =========================
+    CARDS
+    ========================== */
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+        margin-top: 20px;
+    }
+
+    .card {
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 22px;
+        background: #fafafa;
+    }
+
+    .card h3 {
+        margin-top: 0;
+    }
+
+    /* =========================
+    MOEDAS
+    ========================== */
+
+    .currency-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 25px;
+        margin: 30px 0;
+        flex-wrap: wrap;
+    }
+
+    .currency-card {
+        width: 230px;
+        padding: 25px;
+        text-align: center;
+        border-radius: 16px;
+        border: 2px solid #d1fae5;
+        background: #f0fdf4;
+    }
+
+    .currency-symbol {
+        font-size: 42px;
+        font-weight: bold;
+        color: #047857;
+        margin: 8px 0;
+    }
+
+    .currency-name {
+        font-weight: bold;
+        color: #374151;
+    }
+
+    .conversion-arrow {
+        font-size: 35px;
+        color: #059669;
+        font-weight: bold;
+    }
+
+    /* =========================
+    TABELA
+    ========================== */
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+
+    th,
+    td {
+        border-bottom: 1px solid #e5e7eb;
+        padding: 13px;
+        text-align: left;
+    }
+
+    th {
+        background: #f1f5f9;
+        color: #111827;
+    }
+
+    /* =========================
+    CHECKLIST
+    ========================== */
+
+    .checklist {
+        list-style: none;
+        margin-top: 20px;
+    }
+
+    .checklist li {
+        padding: 10px 0;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .checklist li::before {
+        content: "☐";
+        margin-right: 10px;
+        color: #059669;
+        font-size: 18px;
+    }
+
+    /* =========================
+    ATIVIDADE
+    ========================== */
+
+    .activity {
+        background: linear-gradient(135deg, #111827, #064e3b);
+        color: white;
+        border-radius: 20px;
+        padding: 40px;
+    }
+
+    .activity h2 {
+        color: white;
+    }
+
+    .activity h3 {
+        color: #f7df1e;
+    }
+
+    .activity-box {
+        background: rgba(255, 255, 255, .08);
+        border: 1px solid rgba(255, 255, 255, .15);
+        padding: 22px;
+        border-radius: 12px;
+        margin: 20px 0;
+    }
+
+    .activity ul {
+        padding-left: 22px;
+    }
+
+    .activity li {
+        margin-bottom: 8px;
+    }
+
+    .no-solution {
+        background: #f7df1e;
+        color: #111827;
+        padding: 15px;
+        border-radius: 10px;
+        font-weight: bold;
+        margin-top: 25px;
+    }
+
+    /* =========================
+    ASSINATURA
+    ========================== */
+
+    .signature-box {
+        text-align: center;
+        padding: 20px;
+        margin-top: 30px;
+        border-top: 1px solid #e5e7eb;
+        color: #64748b;
+    }
+
+    .signature-box strong {
+        color: #047857;
+    }
+
+    /* =========================
+    RODAPÉ
+    ========================== */
+
+    footer {
+        text-align: center;
+        color: #64748b;
+        padding: 30px;
+        font-size: 14px;
+    }
+
+    footer strong {
+        color: #047857;
+    }
+
+    /* =========================
+    RESPONSIVO
+    ========================== */
+
+    @media (max-width: 850px) {
+
+        .sidebar {
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+
+        .main {
+            margin-left: 0;
+            padding: 25px 18px 50px;
+        }
+
+        .hero {
+            padding: 35px 25px;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+        }
+
+        .objectives,
+        .cards {
+            grid-template-columns: 1fr;
+        }
+
+        .flow {
+            flex-direction: column;
+        }
+
+        .arrow {
+            transform: rotate(90deg);
+        }
+
+        .currency-container {
+            flex-direction: column;
+        }
+
+    }
+
+</style>
+
+</head>
+
+<body>
+
+
+    <!-- =========================
+    MENU
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <span>JS</span> Aula
+        </div>
+
+        <div class="subtitle">
+            JavaScript — Fundamentos
+        </div>
+
+        <div class="teacher">
+            <strong>Prº. Rodrigo Georgino</strong><br>
+            ETEC — 2026
+        </div>
+
+        <div class="menu-title">
+            Conteúdo
+        </div>
+
+        <a href="#objetivos">Objetivos</a>
+        <a href="#programa">Estrutura</a>
+        <a href="#variaveis">Variáveis</a>
+        <a href="#entrada">Entrada de dados</a>
+        <a href="#moeda">Moedas</a>
+        <a href="#cotacao">Cotação</a>
+        <a href="#conversao">Conversão</a>
+        <a href="#multiplicacao">Multiplicação</a>
+        <a href="#javascript">JavaScript</a>
+        <a href="#algoritmo">Algoritmo</a>
+
+        <div class="menu-title">
+            Prática
+        </div>
+
+        <a href="#raciocinio">Raciocínio</a>
+        <a href="#testes">Testando</a>
+        <a href="#checklist">Checklist</a>
+        <a href="#atividade">Atividade</a>
+
+    </aside>
+
+
+    <!-- =========================
+    CONTEÚDO
+    ========================== -->
+
+    <main class="main">
+
+
+        <!-- HERO -->
+
+        <div class="hero">
+
+            <span class="badge">
+                JAVASCRIPT • FUNDAMENTOS
+            </span>
+
+            <h1>
+                Convertendo<br>
+                Dólar para Real
+            </h1>
+
+            <p>
+                Aprenda a trabalhar com valores monetários,
+                cotação, variáveis e conversão de moedas
+                utilizando JavaScript.
+            </p>
+
+            <div class="author">
+                Prº. Rodrigo Georgino • ETEC — 2026
+            </div>
+
+        </div>
+
+
+        <!-- OBJETIVOS -->
+
+        <section id="objetivos">
+
+            <div class="section-number">
+                01 — Objetivos
+            </div>
+
+            <h2>
+                O que vamos aprender?
+            </h2>
+
+            <p>
+                Nesta aula vamos aprender como transformar um valor
+                de uma moeda para outra utilizando uma informação
+                chamada cotação.
+            </p>
+
+            <div class="objectives">
+
+                <div class="objective">
+                    <strong>📦 Variáveis</strong>
+                    Armazenar valores durante a execução do programa.
+                </div>
+
+                <div class="objective">
+                    <strong>⌨️ Entrada</strong>
+                    Solicitar informações ao usuário.
+                </div>
+
+                <div class="objective">
+                    <strong>💵 Cotação</strong>
+                    Entender o significado da cotação de uma moeda.
+                </div>
+
+                <div class="objective">
+                    <strong>💰 Valores</strong>
+                    Trabalhar com valores monetários.
+                </div>
+
+                <div class="objective">
+                    <strong>✖️ Multiplicação</strong>
+                    Utilizar uma operação matemática para conversão.
+                </div>
+
+                <div class="objective">
+                    <strong>📤 Saída</strong>
+                    Mostrar o resultado da conversão.
+                </div>
+
+            </div>
+
+            <div class="warning">
+
+                ⚠️ <strong>Atenção:</strong>
+
+                a atividade no final desta aula não será resolvida.
+                Você deverá utilizar os conceitos apresentados
+                para construir sua própria solução.
+
+            </div>
+
+        </section>
+
+
+        <!-- ESTRUTURA -->
+
+        <section id="programa">
+
+            <div class="section-number">
+                02 — Estrutura
+            </div>
+
+            <h2>
+                Entrada → Processamento → Saída
+            </h2>
+
+            <p>
+                Antes de escrever qualquer código,
+                precisamos entender quais informações
+                o programa precisa receber e qual resultado
+                precisa produzir.
+            </p>
+
+            <div class="flow">
+
+                <div class="flow-box">
+                    ENTRADA
+                    <br>
+                    <small>Informações</small>
+                </div>
+
+                <div class="arrow">
+                    →
+                </div>
+
+                <div class="flow-box">
+                    PROCESSAMENTO
+                    <br>
+                    <small>Conversão</small>
+                </div>
+
+                <div class="arrow">
+                    →
+                </div>
+
+                <div class="flow-box">
+                    SAÍDA
+                    <br>
+                    <small>Resultado</small>
+                </div>
+
+            </div>
+
+            <p>
+                Neste problema, existem duas informações
+                importantes que precisam ser conhecidas.
+            </p>
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <h3>
+                        💱 Cotação
+                    </h3>
+
+                    <p>
+                        O valor utilizado para relacionar
+                        dólar e real.
+                    </p>
+
+                </div>
+
+                <div class="card">
+
+                    <h3>
+                        💵 Valor em dólares
+                    </h3>
+
+                    <p>
+                        A quantidade de dólares que desejamos
+                        converter.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- VARIÁVEIS -->
+
+        <section id="variaveis">
+
+            <div class="section-number">
+                03 — Variáveis
+            </div>
+
+            <h2>
+                Guardando os valores
+            </h2>
+
+            <p>
+                O programa precisa guardar as informações recebidas
+                para poder utilizá-las posteriormente.
+            </p>
+
+            <p>
+                Em JavaScript utilizamos
+                <span class="inline-code">let</span>
+                para criar variáveis.
+            </p>
+
+            <pre><code>let cotacao = 5;</code></pre>
+
+            <p>
+                Podemos também guardar o valor em dólares.
+            </p>
+
+            <pre><code>let dolares = 100;</code></pre>
+
+            <div class="info">
+
+                💡 Os nomes das variáveis devem ajudar
+                a entender o que está sendo armazenado.
+
+                <br><br>
+
+                Prefira nomes como
+                <strong>cotacao</strong> e
+                <strong>dolares</strong>
+                em vez de nomes genéricos como
+                <strong>x</strong> e <strong>y</strong>.
+
+            </div>
+
+        </section>
+
+
+        <!-- ENTRADA -->
+
+        <section id="entrada">
+
+            <div class="section-number">
+                04 — Entrada de dados
+            </div>
+
+            <h2>
+                Recebendo informações
+            </h2>
+
+            <p>
+                Podemos utilizar o
+                <span class="inline-code">prompt()</span>
+                para solicitar informações ao usuário.
+            </p>
+
+            <pre><code>let valor =
+            prompt("Digite um valor:");</code></pre>
+
+            <p>
+                Como o programa realizará cálculos,
+                precisamos trabalhar com números.
+            </p>
+
+            <p>
+                Para converter o texto recebido em número,
+                utilizamos <span class="inline-code">Number()</span>.
+            </p>
+
+            <pre><code>let valor =
+            Number(prompt("Digite um valor:"));</code></pre>
+
+            <div class="flow">
+
+                <div class="flow-box">
+                    Usuário
+                </div>
+
+                <div class="arrow">
+                    →
+                </div>
+
+                <div class="flow-box">
+                    prompt()
+                </div>
+
+                <div class="arrow">
+                    →
+                </div>
+
+                <div class="flow-box">
+                    Number()
+                </div>
+
+                <div class="arrow">
+                    →
+                </div>
+
+                <div class="flow-box">
+                    Número
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- MOEDAS -->
+
+        <section id="moeda">
+
+            <div class="section-number">
+                05 — Conceito
+            </div>
+
+            <h2>
+                Duas moedas diferentes
+            </h2>
+
+            <p>
+                O exercício trabalha com duas moedas:
+                dólar e real.
+            </p>
+
+            <div class="currency-container">
+
+                <div class="currency-card">
+
+                    <div class="currency-symbol">
+                        $
+                    </div>
+
+                    <div class="currency-name">
+                        DÓLAR
+                    </div>
+
+                    <p>
+                        USD
+                    </p>
+
+                </div>
+
+                <div class="conversion-arrow">
+                    →
+                </div>
+
+                <div class="currency-card">
+
+                    <div class="currency-symbol">
+                        R$
+                    </div>
+
+                    <div class="currency-name">
+                        REAL
+                    </div>
+
+                    <p>
+                        BRL
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="info">
+
+                💡 O programa receberá um valor em uma moeda
+                e deverá descobrir quanto esse valor representa
+                na outra moeda.
+
+            </div>
+
+        </section>
+
+
+        <!-- COTAÇÃO -->
+
+        <section id="cotacao">
+
+            <div class="section-number">
+                06 — Conceito
+            </div>
+
+            <h2>
+                O que é cotação?
+            </h2>
+
+            <p>
+                A cotação indica quanto uma unidade de uma moeda
+                vale em relação a outra moeda.
+            </p>
+
+            <p>
+                Imagine, apenas como exemplo didático,
+                que a cotação seja:
+            </p>
+
+            <div class="currency-card"
+            style="margin: 25px auto; max-width: 400px;">
+
+            <div class="currency-symbol">
+                R$ 5,00
+            </div>
+
+            <p>
+                para cada US$ 1,00
+            </p>
+
+        </div>
+
+        <p>
+            Isso significa que um dólar está sendo considerado,
+            neste exemplo, como equivalente a cinco reais.
+        </p>
+
+        <div class="warning">
+
+            ⚠️ Este valor é apenas um exemplo didático.
+            A atividade pedirá que o usuário informe
+            a cotação do dia.
+
+        </div>
+
+        <h3>
+            Por que a cotação é necessária?
+        </h3>
+
+        <p>
+            Porque o valor informado em dólares não está
+            originalmente expresso em reais.
+        </p>
+
+        <p>
+            Precisamos utilizar a cotação para estabelecer
+            a relação entre as duas moedas.
+        </p>
+
+    </section>
+
+
+    <!-- CONVERSÃO -->
+
+    <section id="conversao">
+
+        <div class="section-number">
+            07 — Conversão
+        </div>
+
+        <h2>
+            Como funciona uma conversão?
+        </h2>
+
+        <p>
+            Converter significa transformar um valor que está
+            expresso em uma unidade ou moeda para outra.
+        </p>
+
+        <div class="flow">
+
+            <div class="flow-box">
+                VALOR
+                <br>
+                <small>em dólar</small>
+            </div>
+
+            <div class="arrow">
+                +
+            </div>
+
+            <div class="flow-box">
+                COTAÇÃO
+                <br>
+                <small>da moeda</small>
+            </div>
+
+            <div class="arrow">
+                =
+            </div>
+
+            <div class="flow-box">
+                VALOR
+                <br>
+                <small>em real</small>
+            </div>
+
+        </div>
+
+        <p>
+            Observe que a cotação funciona como um fator
+            que permite realizar a transformação.
+        </p>
+
+        <div class="success">
+
+            ✔️ O objetivo do programa não é simplesmente
+            mostrar o valor informado pelo usuário.
+
+            <br><br>
+
+            É necessário realizar uma operação para
+            transformar o valor de uma moeda em outra.
+
+        </div>
+
+    </section>
+
+
+    <!-- MULTIPLICAÇÃO -->
+
+    <section id="multiplicacao">
+
+        <div class="section-number">
+            08 — Matemática
+        </div>
+
+        <h2>
+            A multiplicação em JavaScript
+        </h2>
+
+        <p>
+            Para multiplicar dois valores em JavaScript,
+            utilizamos o operador:
+        </p>
+
+        <pre><code>*</code></pre>
+
+        <p>
+            Por exemplo:
+        </p>
+
+        <pre><code>let resultado = 10 * 5;</code></pre>
+
+        <p>
+            Nesse caso, dois valores estão sendo multiplicados.
+        </p>
+
+        <div class="info">
+
+            💡 Na matemática usamos o símbolo
+            <strong>×</strong>.
+
+            <br><br>
+
+            Em JavaScript usamos
+            <strong>*</strong>.
+
+        </div>
+
+        <h3>
+            Pense no problema
+        </h3>
+
+        <p>
+            Se você conhece:
+        </p>
+
+        <ul style="padding-left: 25px; margin-bottom: 20px;">
+
+            <li>o valor em dólares;</li>
+
+            <li>a cotação;</li>
+
+        </ul>
+
+        <p>
+            qual operação pode relacionar essas duas
+            informações para obter o valor em reais?
+        </p>
+
+        <div class="warning">
+
+            🧠 Não copie uma fórmula.
+            Entenda o que a cotação representa
+            e descubra a operação necessária.
+
+        </div>
+
+    </section>
+
+
+    <!-- EXEMPLO -->
+
+    <section>
+
+        <div class="section-number">
+            09 — Exemplo conceitual
+        </div>
+
+        <h2>
+            Pense como um comprador
+        </h2>
+
+        <p>
+            Imagine que uma pessoa queira comprar
+            uma determinada quantidade de dólares.
+        </p>
+
+        <p>
+            Para descobrir quanto ela precisará
+            pagar em reais, temos:
+        </p>
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>
+                    Informação A
+                </h3>
+
+                <p>
+                    Quantidade de dólares desejada.
+                </p>
+
+                <p>
+                    Exemplo: <strong>US$ 100</strong>
+                </p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>
+                    Informação B
+                </h3>
+
+                <p>
+                    Cotação utilizada.
+                </p>
+
+                <p>
+                    Exemplo: <strong>R$ 5,00</strong>
+                </p>
+
+            </div>
+
+        </div>
+
+        <p>
+            A pergunta que devemos fazer é:
+        </p>
+
+        <div class="info">
+
+            <strong>
+                "Se eu sei quanto vale 1 dólar,
+                quanto preciso pagar para comprar
+                vários dólares?"
+            </strong>
+
+        </div>
+
+        <p>
+            Essa pergunta deve levar você a descobrir
+            a operação matemática necessária.
+        </p>
+
+        <div class="warning">
+
+            ⚠️ O objetivo deste exemplo é desenvolver
+            o raciocínio. Não utilize os valores acima
+            como resposta da atividade.
+
+        </div>
+
+    </section>
+
+
+    <!-- JAVASCRIPT -->
+
+    <section id="javascript">
+
+        <div class="section-number">
+            10 — JavaScript
+        </div>
+
+        <h2>
+            Transformando o raciocínio em código
+        </h2>
+
+        <p>
+            Agora vamos revisar as ferramentas que você
+            precisará utilizar.
+        </p>
+
+        <h3>
+            Criando uma variável
+        </h3>
+
+        <pre><code>let cotacao = 5;</code></pre>
+
+        <h3>
+            Recebendo um número
+        </h3>
+
+        <pre><code>let valor =
+        Number(prompt("Digite o valor:"));</code></pre>
+
+        <h3>
+            Realizando uma multiplicação
+        </h3>
+
+        <pre><code>let resultado = valor1 * valor2;</code></pre>
+
+        <h3>
+            Mostrando o resultado
+        </h3>
+
+        <pre><code>console.log(resultado);</code></pre>
+
+        <div class="warning">
+
+            ⚠️ Os exemplos mostram as ferramentas isoladamente.
+            Você deverá decidir como utilizá-las em conjunto
+            para resolver o exercício.
+
+        </div>
+
+    </section>
+
+
+    <!-- ALGORITMO -->
+
+    <section id="algoritmo">
+
+        <div class="section-number">
+            11 — Algoritmo
+        </div>
+
+        <h2>
+            Planeje antes de programar
+        </h2>
+
+        <p>
+            Antes de abrir o editor de código,
+            transforme o problema em passos.
+        </p>
+
+        <p>
+            Um roteiro inicial pode ser:
+        </p>
+
+        <pre><code>INÍCIO
+
+            1. Ler uma informação.
+            2. Ler outra informação.
+            3. Realizar a conversão.
+            4. Mostrar o resultado.
+
+        FIM</code></pre>
+
+        <div class="info">
+
+            💡 Agora complete mentalmente:
+            <br><br>
+
+            Qual informação será lida primeiro?
+            <br>
+            Qual será lida depois?
+            <br>
+            Qual cálculo será realizado?
+            <br>
+            O que será exibido?
+
+        </div>
+
+    </section>
+
+
+    <!-- RACIOCÍNIO -->
+
+    <section id="raciocinio">
+
+        <div class="section-number">
+            12 — Desafio
+        </div>
+
+        <h2>
+            Descubra a lógica
+        </h2>
+
+        <p>
+            Antes de escrever o código,
+            responda às perguntas.
+        </p>
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>
+                    1. Entrada
+                </h3>
+
+                <p>
+                    Quais informações precisam ser solicitadas?
+                </p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>
+                    2. Variáveis
+                </h3>
+
+                <p>
+                    Quais nomes representarão essas informações?
+                </p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>
+                    3. Conversão
+                </h3>
+
+                <p>
+                    Qual informação precisa ser convertida?
+                </p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>
+                    4. Operação
+                </h3>
+
+                <p>
+                    Qual operação matemática deve ser utilizada?
+                </p>
+
+            </div>
+
+        </div>
+
+        <h3>
+            Complete o raciocínio
+        </h3>
+
+        <pre><code>Cotação do dia: ______________________
+
+            Valor em dólares: ____________________
+
+            Moeda de entrada: ____________________
+
+            Moeda de saída: ______________________
+
+            Operação matemática: _________________
+
+        Resultado: ___________________________</code></pre>
+
+        <div class="warning">
+
+            🧠 A unidade/moeda do resultado é uma pista
+            importante para verificar se você montou
+            corretamente a conversão.
+
+        </div>
+
+    </section>
+
+
+    <!-- TESTES -->
+
+    <section id="testes">
+
+        <div class="section-number">
+            13 — Testando
+        </div>
+
+        <h2>
+            Como testar seu programa?
+        </h2>
+
+        <p>
+            Depois de escrever o programa,
+            faça testes com valores simples.
+        </p>
+
+        <p>
+            Escolha uma cotação e um valor em dólares
+            que permitam realizar o cálculo manualmente.
+        </p>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Informação</th>
+                    <th>Valor para teste</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>Cotação</td>
+                    <td>Escolha um valor simples</td>
+                </tr>
+
+                <tr>
+                    <td>Dólares</td>
+                    <td>Escolha um valor simples</td>
+                </tr>
+
+                <tr>
+                    <td>Resultado esperado</td>
+                    <td>Calcule manualmente</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <div class="success">
+
+            ✔️ Compare o resultado calculado manualmente
+            com o resultado apresentado pelo programa.
+
+        </div>
+
+        <div class="warning">
+
+            ⚠️ Se o resultado estiver errado,
+            volte ao algoritmo antes de alterar
+            o código aleatoriamente.
+
+        </div>
+
+    </section>
+
+
+    <!-- CHECKLIST -->
+
+    <section id="checklist">
+
+        <div class="section-number">
+            14 — Preparação
+        </div>
+
+        <h2>
+            Checklist
+        </h2>
+
+        <p>
+            Antes de iniciar a atividade,
+            verifique se você sabe:
+        </p>
+
+        <ul class="checklist">
+
+            <li>
+                Criar variáveis utilizando <strong>let</strong>.
+            </li>
+
+            <li>
+                Solicitar informações com <strong>prompt()</strong>.
+            </li>
+
+            <li>
+                Converter informações usando <strong>Number()</strong>.
+            </li>
+
+            <li>
+                Trabalhar com números decimais.
+            </li>
+
+            <li>
+                Entender o que significa cotação.
+            </li>
+
+            <li>
+                Identificar a moeda de entrada.
+            </li>
+
+            <li>
+                Identificar a moeda de saída.
+            </li>
+
+            <li>
+                Utilizar o operador de multiplicação
+                <strong>*</strong>.
+            </li>
+
+            <li>
+                Armazenar o resultado em uma variável.
+            </li>
+
+            <li>
+                Exibir o resultado com
+                <strong>alert()</strong> ou
+                <strong>console.log()</strong>.
+            </li>
+
+            <li>
+                Testar o resultado manualmente.
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- ATIVIDADE -->
+
+    <section id="atividade" class="activity">
+
+        <div class="section-number">
+            15 — Atividade
+        </div>
+
+        <h2>
+            📝 Agora é com você!
+        </h2>
+
+
+        <div class="activity-box">
+
+            <h3>
+                Problema
+            </h3>
+
+            <p>
+                Escreva um Programa em JavaScript que:
+            </p>
+
+            <ul>
+
+                <li>
+                    leia a cotação do dólar do dia;
+                </li>
+
+                <li>
+                    leia um valor em dólares que você deseja comprar;
+                </li>
+
+                <li>
+                    converta esse valor para Real;
+                </li>
+
+                <li>
+                    mostre o resultado.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="activity-box">
+
+            <h3>
+                Antes de escrever o código
+            </h3>
+
+            <p>
+                Responda no papel:
+            </p>
+
+            <br>
+
+            <p>
+                <strong>1.</strong>
+                Quais informações o programa precisa receber?
+            </p>
+
+            <p>
+                <strong>2.</strong>
+                Qual será o nome de cada variável?
+            </p>
+
+            <p>
+                <strong>3.</strong>
+                Qual informação representa a cotação?
+            </p>
+
+            <p>
+                <strong>4.</strong>
+                Qual informação representa o valor em dólares?
+            </p>
+
+            <p>
+                <strong>5.</strong>
+                Qual é a moeda de entrada?
+            </p>
+
+            <p>
+                <strong>6.</strong>
+                Qual é a moeda de saída?
+            </p>
+
+            <p>
+                <strong>7.</strong>
+                Qual operação matemática deve ser utilizada?
+            </p>
+
+            <p>
+                <strong>8.</strong>
+                Como você apresentará o resultado?
+            </p>
+
+        </div>
+
+
+        <div class="activity-box">
+
+            <h3>
+                Monte seu algoritmo
+            </h3>
+
+            <pre><code>INÍCIO
+
+                1. _______________________________
+
+                2. _______________________________
+
+                3. _______________________________
+
+                4. _______________________________
+
+            FIM</code></pre>
+
+        </div>
+
+
+        <div class="activity-box">
+
+            <h3>
+                Faça um teste
+            </h3>
+
+            <pre><code>Cotação: _________________________
+
+                Valor em dólares: ________________
+
+                Cálculo: _________________________
+
+                Resultado esperado: ______________
+
+            Resultado do programa: ___________</code></pre>
+
+        </div>
+
+
+        <div class="no-solution">
+
+            🚫 DESAFIO
+
+            <br><br>
+
+            Não procure uma solução pronta.
+
+            <br><br>
+
+            Primeiro entenda o problema.
+            <br>
+            Depois descubra a relação entre cotação
+            e valor em dólares.
+            <br>
+            Monte o algoritmo.
+            <br>
+            Finalmente transforme o algoritmo em JavaScript.
+
+        </div>
+
+    </section>
+
+
+    <!-- CONCLUSÃO -->
+
+    <section>
+
+        <div class="section-number">
+            16 — Para lembrar
+        </div>
+
+        <h2>
+            Do problema ao programa
+        </h2>
+
+        <div class="flow">
+
+            <div class="flow-box">
+                PROBLEMA
+            </div>
+
+            <div class="arrow">
+                →
+            </div>
+
+            <div class="flow-box">
+                IDENTIFICAR DADOS
+            </div>
+
+            <div class="arrow">
+                →
+            </div>
+
+            <div class="flow-box">
+                ENTENDER A COTAÇÃO
+            </div>
+
+            <div class="arrow">
+                →
+            </div>
+
+            <div class="flow-box">
+                DEFINIR CÁLCULO
+            </div>
+
+            <div class="arrow">
+                →
+            </div>
+
+            <div class="flow-box">
+                JAVASCRIPT
+            </div>
+
+        </div>
+
+        <p style="text-align:center; margin-top:25px;">
+
+            <strong>
+                Antes de programar, entenda o que os números
+                representam. Depois transforme o raciocínio
+                em código.
+            </strong>
+
+        </p>
+
+    </section>
+
+
+    <!-- ASSINATURA -->
+
+    <div class="signature-box">
+
+        <strong>
+            Prº. Rodrigo Georgino
+        </strong>
+
+        <br>
+
+        ETEC — 2026
+
+    </div>
+
+
+    <!-- RODAPÉ -->
+
+    <footer>
+
+              Aula de JavaScript • Fundamentos de Programação
+
+    </footer>
+
+
+</main>
+
+</body>
+
+</html>
